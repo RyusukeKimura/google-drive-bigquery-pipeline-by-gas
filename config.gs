@@ -1,7 +1,12 @@
-// 設定
-// true: CSVファイルをBigQueryに連携したらCSVファイルを削除する
-// false: CSVファイルをBigQueryに連携したらCSVファイルを別フォルダに保存する
+// オプション
+//// true: CSVファイルをBigQueryに連携したらCSVファイルを削除する
+//// false: CSVファイルをBigQueryに連携したらCSVファイルを別フォルダに保存する
 const TRASH_FILES_AFTER_MOVE = false;
+//// CSVファイルの先頭行を何行スキップするかを指定する
+const SKIP_READING_ROWS = 1
+//// WRITE_APPEND: BigQueryのテーブル末尾にCSVファイルを追加する
+//// WRITE_TRUNCATE: BigQueryのテーブルをCSVファイルで書き換える
+const WRITE_DISPOSITION = 'WRITE_APPEND'
 
 // BigQueryとGoogle Driveの変数定義
 const BQ_PROJECT_ID = 'BQのプロジェクトID';

@@ -20,7 +20,7 @@ function process_all_pending_csv_files() {
     var thisTable = table_definition();
     Logger.log('Attempt to load CSV file -> BQ Job. File ID: ' + file.getName());
     Logger.log('Project: ' + BQ_PROJECT_ID + ' --- Data Set: ' + BQ_DATASET_ID + ' --- Table ID: ' + thisTable.tableId + ' --- File ID: ' + file.getId())
-    bqLoadCsv(BQ_PROJECT_ID, BQ_DATASET_ID, thisTable.tableId, file.getId());
+    bqLoadCsv(BQ_PROJECT_ID, BQ_DATASET_ID, thisTable.tableId, file.getId(), SKIP_READING_ROWS, WRITE_DISPOSITION);
     Logger.log('Loaded CSV file -> BQ Job. File ID: ' + file.getName());
 
     if(TRASH_FILES_AFTER_MOVE) {

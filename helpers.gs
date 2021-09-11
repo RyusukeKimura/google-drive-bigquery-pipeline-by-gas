@@ -1,41 +1,35 @@
-// jobs.gsで用いる関数を定義しておく.gsファイル
+// このファイルのコードは触らないでください！
 
-// BigQueryのTable定義に必要なJSONファイルを生成する関数
-function constructTableJson(thisTableData, thisProjectId, thisDatasetId) {
-  return{
-      tableReference: {
-        projectId: thisProjectId,
-        datasetId: thisDatasetId,
-        tableId: thisTableData.tableId
-      },
-      schema: thisTableData.schema
-    };
+// create_tables_one_time()はCSVデータを格納するBigQueryのテーブルを生成する関数です
+function create_table_one_time() {
+    var thisTable = table_definition();
+    var tableJson = constructTableJson(thisTable, BQ_PROJECT_ID, BQ_DATASET_ID);
+    createTable(thisTable.tableId, BQ_PROJECT_ID, BQ_DATASET_ID, tableJson);
 }
 
-// BigQueryにテーブルを作成する関数
-function createTable(thisTableId, thisProjectId, thisDataSetId, tableReferenceJson) {
-  table = BigQuery.Tables.insert(tableReferenceJson, thisProjectId, thisDataSetId);
-  Logger.log('Table created: %s', thisTableId);
-}
+// process_all_pending_csv_files()はCSVデータをBigQueryのテーブルに流し込む関数です
+function process_all_pending_csv_files() {
 
-// BigQueryにCSVファイルをロードする関数
-function bqLoadCsv(thisProjectId, thisDatasetId, thisTableId, csvFileId) {
-  var file = DriveApp.getFileById(csvFileId);
-  var data = file.getBlob().setContentType('application/octet-stream');
-  var myJob = {
-    configuration: {
-      load: {
-        destinationTable: {
-          projectId: thisProjectId,
-          datasetId: thisDatasetId,
-          tableId: thisTableId
-        },
-        skipLeadingRows: 1,
-        writeDisposition: 'WRITE_APPEND',
-      }
+  // 対象のGoogle Driveのフォルダに格納されているCSVファイルを取得する
+  var folder = DriveApp.getFolderById(PENDING_CSV_DRIVE_FOLDER_ID);
+  var files = folder.getFiles();
+
+  // 各CSVファイルに対して処理を行う
+  while (files.hasNext()){
+    var file = files.next();
+    var thisTable = table_definition();
+    Logger.log('Attempt to load CSV file -> BQ Job. File ID: ' + file.getName());
+    Logger.log('Project: ' + BQ_PROJECT_ID + ' --- Data Set: ' + BQ_DATASET_ID + ' --- Table ID: ' + thisTable.tableId + ' --- File ID: ' + file.getId())
+    bqLoadCsv(BQ_PROJECT_ID, BQ_DATASET_ID, thisTable.tableId, file.getId(), SKIP_READING_ROWS, WRITE_DISPOSITION);
+    Logger.log('Loaded CSV file -> BQ Job. File ID: ' + file.getName());
+
+    if(TRASH_FILES_AFTER_MOVE) {
+      file.setTrashed(true); // CSVファイルを削除する
+    } else {
+      file.getParents().next().removeFile(file);
+      var newFolder = DriveApp.getFolderById(PROCESSED_CSV_DRIVE_FOLDER_ID);
+      file.moveTo(newFolder);
+      Logger.log('Moving CSV file to Processed folder. File ID: ' + file.getName() + ' --> ' + newFolder.getName());
     }
-  };
-  loadJob = BigQuery.Jobs.insert(myJob, thisProjectId, data);
-  Logger.log('Load job started. Check on the status of it here: ' +
-      'https://console.cloud.google.com/bigquery?project=%s&page=jobs', BQ_PROJECT_ID);
+  }
 }
