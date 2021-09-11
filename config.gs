@@ -7,6 +7,8 @@ const SKIP_READING_ROWS = 1
 //// WRITE_APPEND: BigQueryのテーブル末尾にCSVファイルを追加する
 //// WRITE_TRUNCATE: BigQueryのテーブルをCSVファイルで書き換える
 const WRITE_DISPOSITION = 'WRITE_APPEND'
+//// CSVファイルの文字コード。このコードではUTF-8とShift_JISに対応。他の文字コードによる動作は未確認。
+const CHARACTER_CODE = 'Shift_JIS'
 
 // BigQueryとGoogle Driveの変数定義
 const BQ_PROJECT_ID = 'BQのプロジェクトID';
