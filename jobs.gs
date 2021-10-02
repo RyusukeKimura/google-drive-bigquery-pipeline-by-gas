@@ -9,7 +9,7 @@ function create_table() {
 }
 
 // remove_table()はBigQueryのテーブルを削除する関数です
-funtion remove_table() {
+function remove_table() {
   var thisTable = table_definition();
   BigQuery.Tables.remove(BQ_PROJECT_ID, BQ_DATASET_ID, thisTable.tableId);
   Logger.log('Table removed: %s', thisTable.tableId);
