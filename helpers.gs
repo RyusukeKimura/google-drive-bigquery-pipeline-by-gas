@@ -13,18 +13,12 @@ function constructTableJson(thisTableData, thisProjectId, thisDatasetId) {
     };
 }
 
-// BigQueryにテーブルを作成する関数
-function createTable(thisTableId, thisProjectId, thisDataSetId, tableReferenceJson) {
-  table = BigQuery.Tables.insert(tableReferenceJson, thisProjectId, thisDataSetId);
-  Logger.log('Table created: %s', thisTableId);
-}
-
 // BigQueryにCSVファイルをロードする関数
-function bqLoadCsv(thisProjectId, thisDatasetId, thisTableId, csvFileId, thisSkipReadingRows, thisWriteDisposition, thisCharacterCode) {
+function bqLoadCsv(thisProjectId, thisDatasetId, thisTableId, csvFileId, thisSkipReadingRows, thisCharacterCode) {
   var file = DriveApp.getFileById(csvFileId);
   var blob = file.getBlob().setContentType('application/octet-stream');
   if(thisCharacterCode == 'UFT-8'){
-    var data = blob
+    var data = blob;
   } else if(thisCharacterCode == 'Shift_JIS'){
     var csvString = blob.getDataAsString('Shift_JIS')
     var data = Utilities.newBlob('', 'text/csv', 'UTF-8 csv file').setDataFromString(csvString, "UTF-8");
@@ -40,7 +34,7 @@ function bqLoadCsv(thisProjectId, thisDatasetId, thisTableId, csvFileId, thisSki
           tableId: thisTableId
         },
         skipLeadingRows: thisSkipReadingRows,
-        writeDisposition: thisWriteDisposition,
+        writeDisposition: 'WRITE_APPEND',
       }
     }
   };

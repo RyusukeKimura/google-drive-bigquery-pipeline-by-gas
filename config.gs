@@ -3,12 +3,11 @@
 //// false: CSVファイルをBigQueryに連携したらCSVファイルを別フォルダに保存する
 const TRASH_FILES_AFTER_MOVE = false;
 //// CSVファイルの先頭行を何行スキップするかを指定する
-const SKIP_READING_ROWS = 1
-//// WRITE_APPEND: BigQueryのテーブル末尾にCSVファイルを追加する
-//// WRITE_TRUNCATE: BigQueryのテーブルをCSVファイルで書き換える
-const WRITE_DISPOSITION = 'WRITE_APPEND'
+const SKIP_READING_ROWS = 1;
 //// CSVファイルの文字コード。このコードではUTF-8とShift_JISに対応。他の文字コードによる動作は未確認。
-const CHARACTER_CODE = 'Shift_JIS'
+const CHARACTER_CODE = 'Shift_JIS';
+//// true: CSVデータを連携する度にBigQueryのテーブルを洗い替える
+const REFRESH_TABLE = false;
 
 // BigQueryとGoogle Driveの変数定義
 const BQ_PROJECT_ID = 'BQのプロジェクトID';

@@ -1,15 +1,16 @@
 # これは何??
 
-Google App Script(GAS)を用いてGoogle Drive上のCSVファイルをBigQueryのテーブルに連携する
+Google App Script(GAS)を用いてGoogle Drive上のCSVファイルをBigQueryのテーブルに連携する。
 
 ## 使い方
 
 1. Google App Scriptに`config.js`, `helpers.js`, `jobs.js`をコピーする。
 2. サービスから「BigQuery」を追加する。
-3. config.gsの変数と`table_definition()`をいい感じにする。
-4. `jobs.js`の`create_table_one_time()`を実行してCSVファイルを格納するBigQueryのテーブルを作成する。
-5. `process_all_pending_csv_files()`を実行してGoogle Driveの指定のフォルダに格納されているCSVファイルを全てBigQueryのテーブルにロードする
-6. Google App Scriptのトリガー機能を用いて`process_all_pending_csv_files()`を定期実行するように設定する
+3. `config.gs`の変数と`table_definition()`をいい感じにする。
+4. `jobs.js`の`create_table()`を実行してCSVファイルを格納するBigQueryのテーブルを作成する。
+5. `process_all_pending_csv_files()`を実行してGoogle Driveの指定のフォルダに格納されているCSVファイルを全てBigQueryのテーブルにロードする。
+6. Google App Scriptのトリガー機能を用いて`process_all_pending_csv_files()`を定期実行するように設定する。
+7. BigQueryのテーブルを消したい時は、`jobs.js`の`remove_table()`を実行する。
 
 ## フォルダ構成
 
