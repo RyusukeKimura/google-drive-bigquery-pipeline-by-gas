@@ -21,11 +21,11 @@ function table_definition() {
   table.tableId = 'iris-dataset-test';
   table.schema = {
       fields: [
-        {name: 'sepal_length', type: 'FLOAT'},
-        {name: 'sepal_width', type: 'FLOAT'},
-        {name: 'petal_length', type: 'FLOAT'},
-        {name: 'petal_width', type: 'FLOAT'},
-        {name: 'species', type: 'STRING'}
+        {name: 'sepal_length', type: 'FLOAT', mode: 'REQUIRED', description: '萼の長さ'},
+        {name: 'sepal_width', type: 'FLOAT', mode: 'REQUIRED', description: '萼の幅'},
+        {name: 'petal_length', type: 'FLOAT', mode: 'REQUIRED', description: '花弁の長さ'},
+        {name: 'petal_width', type: 'FLOAT', mode: 'REQUIRED', description: '花弁の幅'},
+        {name: 'species', type: 'STRING', mode: 'REQUIRED', description: '種別'}
       ]
     };
   return table;
